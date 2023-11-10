@@ -1,0 +1,3 @@
+20231109_211919 : WARNING : Isso é um log de alerta.
+20231109_211919 : INFO : Isso é um log informativo.
+20231109_211919 : FINEST : Aconteceu muuuitas coisas

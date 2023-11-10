@@ -1,0 +1,3 @@
+20231109_212421 : SEVERE : Isso é um log de erro.
+20231109_212421 : INFO : Isso é um log informativo.
+20231109_212421 : FINEST : Aconteceu muuuitas coisas

@@ -1,0 +1,2 @@
+20231109_212356 : INFO : Isso é um log informativo.
+20231109_212356 : FINEST : Aconteceu muuuitas coisas

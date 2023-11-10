@@ -1,0 +1,3 @@
+20231110_163843 : SEVERE : Isso é um log de erro.
+20231110_163843 : INFO : Isso é um log informativo.
+20231110_163843 : FINEST : Aconteceu muuuitas coisas

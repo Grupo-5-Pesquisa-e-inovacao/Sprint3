@@ -1,0 +1,3 @@
+20231110_135144 : SEVERE : Isso é um log de erro.
+20231110_135144 : INFO : Isso é um log informativo.
+20231110_135144 : FINEST : Aconteceu muuuitas coisas

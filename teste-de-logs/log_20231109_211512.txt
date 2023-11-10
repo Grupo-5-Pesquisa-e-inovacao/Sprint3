@@ -1,0 +1,3 @@
+20231109_211512 : WARNING : Isso é um log de alerta.
+20231109_211512 : INFO : Isso é um log informativo.
+20231109_211512 : FINEST : Aconteceu muuuitas coisas

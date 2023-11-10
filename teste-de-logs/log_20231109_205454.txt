@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-11-09T23:54:54.041735800Z</date>
+  <millis>1699574094041</millis>
+  <nanos>735800</nanos>
+  <sequence>0</sequence>
+  <logger>Logs</logger>
+  <level>INFO</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log informativo.</message>
+</record>
+<record>
+  <date>2023-11-09T23:54:54.067734800Z</date>
+  <millis>1699574094067</millis>
+  <nanos>734800</nanos>
+  <sequence>1</sequence>
+  <logger>Logs</logger>
+  <level>FINEST</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Aconteceu muuuitas coisas</message>
+</record>
+</log>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-11-09T23:46:37.402780800Z</date>
+  <millis>1699573597402</millis>
+  <nanos>780800</nanos>
+  <sequence>0</sequence>
+  <logger>Logs</logger>
+  <level>SEVERE</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log severo.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.432789100Z</date>
+  <millis>1699573597432</millis>
+  <nanos>789100</nanos>
+  <sequence>1</sequence>
+  <logger>Logs</logger>
+  <level>WARNING</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log de aviso.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.434306700Z</date>
+  <millis>1699573597434</millis>
+  <nanos>306700</nanos>
+  <sequence>2</sequence>
+  <logger>Logs</logger>
+  <level>INFO</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log informativo.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.434306700Z</date>
+  <millis>1699573597434</millis>
+  <nanos>306700</nanos>
+  <sequence>3</sequence>
+  <logger>Logs</logger>
+  <level>CONFIG</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log de configuração.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.435328900Z</date>
+  <millis>1699573597435</millis>
+  <nanos>328900</nanos>
+  <sequence>4</sequence>
+  <logger>Logs</logger>
+  <level>FINE</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log detalhado.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.435328900Z</date>
+  <millis>1699573597435</millis>
+  <nanos>328900</nanos>
+  <sequence>5</sequence>
+  <logger>Logs</logger>
+  <level>FINER</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é um log mais detalhado.</message>
+</record>
+<record>
+  <date>2023-11-09T23:46:37.435328900Z</date>
+  <millis>1699573597435</millis>
+  <nanos>328900</nanos>
+  <sequence>6</sequence>
+  <logger>Logs</logger>
+  <level>FINEST</level>
+  <class>Logs</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Isso é o log mais detalhado de todos.</message>
+</record>
+</log>
