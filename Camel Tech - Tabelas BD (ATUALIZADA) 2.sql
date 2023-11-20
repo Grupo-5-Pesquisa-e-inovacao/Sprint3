@@ -1,7 +1,6 @@
 CREATE DATABASE camelTech;
 USE camelTech;
 
-
 -- TABELA provedora
 CREATE TABLE provedora (
   idProvedora INT PRIMARY KEY auto_increment,
@@ -112,11 +111,10 @@ CREATE TABLE tipoDado (
   tipoDado VARCHAR(45));
   INSERT INTO tipoDado (tipoDado) VALUES
 ('Uso de RAM'),
-('Espaço em Disco'),
 ('Uso de Disco'),
 ('Uso de CPU'),
-('bytesRecebidos'),
-('bytesEnviados');
+('Velocidade de Rede');
+
 
 -- TABELA configuracao
 CREATE TABLE configuracao (
@@ -130,18 +128,20 @@ CREATE TABLE configuracao (
 
 
 INSERT INTO configuracao values
-(null,1,1),
-(null,1,2),
-(null,1,3),
+(null,1,1), -- 	RAM
+(null,1,2), -- DISCO
+(null,1,3), -- CPU
+(null,1,4), -- REDE
 
-(null,2,1),
-(null,2,2),
-(null,2,3),
+(null,2,1), -- RAM
+(null,2,2), -- DISCO
+(null,2,3), -- CPU
+(null,2,4), -- REDE
 
-(null,3,1),
-(null,3,2),
-(null,3,3),
-(null,3,4);
+(null,3,1), -- RAM 
+(null,3,2), -- DISCO
+(null,3,3), -- CPU
+(null,3,4); -- REDE
 
   
   select * from configuracao;
@@ -149,35 +149,22 @@ INSERT INTO configuracao values
 -- TABELA dadosCapturados
 CREATE TABLE dadosCapturados (
   iddadosCapturados INT PRIMARY KEY auto_increment,
-  dadoCapturado DECIMAL(10,5),
+  dadoCapturado Float,
   dtHora DATETIME,
   fkConfiguracao INT,
   constraint fkConfigCap foreign key(fkConfiguracao) references configuracao(idConfiguracao),
   fkTipoDado INT,
   constraint fkTipoDadoCap foreign key(fkTipoDado) references tipoDado(idTipoDado));
   
--- Para o Servidor 1
-INSERT INTO dadosCapturados (dadoCapturado, dtHora, fkConfiguracao, fkTipoDado)
-VALUES
-(85.5, '2023-11-05 11:15:00', 1, 1),
-(750.0, '2023-11-05 11:30:00', 2, 2),
-(25.0, '2023-11-05 12:00:00', 3, 3);
+select * from dadosCapturados;
 
--- Para o Servidor 2
-INSERT INTO dadosCapturados (dadoCapturado, dtHora, fkConfiguracao, fkTipoDado)
-VALUES
-(90.0, '2023-11-05 11:15:00', 4, 1),
-(720.5, '2023-11-05 11:30:00', 5, 2),
-(22.5, '2023-11-05 12:00:00', 6, 3);
 
--- Para o Servidor 3
-INSERT INTO dadosCapturados (dadoCapturado, dtHora, fkConfiguracao, fkTipoDado)
-VALUES
-(87.0, '2023-11-05 11:15:00', 7, 1),
-(760.0, '2023-11-05 11:30:00', 8, 2),
-(24.0, '2023-11-05 12:00:00', 9, 3);
+
+truncate table dadoscapturados;
 
   -- SELECTS 
+  
+  
   
 -- SELECIONAR TODOS OS DADOS CAPTURADOS DE UM SERVIDOR 
 SELECT 
