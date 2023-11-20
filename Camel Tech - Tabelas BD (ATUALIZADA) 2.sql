@@ -128,22 +128,23 @@ CREATE TABLE configuracao (
 
 
 INSERT INTO configuracao values
-(null,1,1), -- 	RAM
-(null,1,2), -- DISCO
-(null,1,3), -- CPU
-(null,1,4), -- REDE
+(1,1,1), -- RAM
+(2,1,2), -- DISCO
+(3,1,3), -- CPU
+(4,1,4), -- REDE
 
-(null,2,1), -- RAM
-(null,2,2), -- DISCO
-(null,2,3), -- CPU
-(null,2,4), -- REDE
+(5,2,1), -- RAM
+(6,2,2), -- DISCO
+(7,2,3), -- CPU
+(8,2,4), -- REDE
 
-(null,3,1), -- RAM 
-(null,3,2), -- DISCO
-(null,3,3), -- CPU
-(null,3,4); -- REDE
+(9,3,1), -- RAM 
+(10,3,2), -- DISCO
+(11,3,3), -- CPU
+(12,3,4); -- REDE
 
-  
+
+
   select * from configuracao;
 
 -- TABELA dadosCapturados
@@ -158,13 +159,31 @@ CREATE TABLE dadosCapturados (
   
 select * from dadosCapturados;
 
-
-
 truncate table dadoscapturados;
+
+
+
+
+
+
+
 
   -- SELECTS 
   
-  
+    SELECT c.idConfiguracao
+FROM configuracao c
+JOIN servidor s ON c.fkServidor = s.idServidor
+WHERE c.fktipoComponente = 2;
+
+
+SELECT dc.iddadosCapturados,
+       dc.dadoCapturado,
+       dc.dtHora,
+       dc.fkConfiguracao,
+       tc.tipoDado
+FROM dadosCapturados dc
+JOIN tipoDado tc ON dc.fkTipoDado = tc.idTipoDado;
+
   
 -- SELECIONAR TODOS OS DADOS CAPTURADOS DE UM SERVIDOR 
 SELECT 
@@ -178,7 +197,3 @@ INNER JOIN tipoComponente ON configuracao.fktipoComponente = tipoComponente.idti
 INNER JOIN servidor ON configuracao.fkServidor = servidor.idServidor
 WHERE servidor.idServidor = 2;
 
-
-
-  
-  
