@@ -4,15 +4,14 @@ USE camelTech;
 -- TABELA provedora
 CREATE TABLE provedora (
   idProvedora INT PRIMARY KEY auto_increment,
-  nomeFantasia VARCHAR(45),
   razaoSocial VARCHAR(45),
   cnpj VARCHAR(14));
   
-  INSERT INTO provedora (nomeFantasia, razaoSocial, cnpj) 
+  INSERT INTO provedora (razaoSocial, cnpj) 
 VALUES
-('CamelCloud', 'Camel Tech Cloud Solutions Ltda.', '12345678901234'),
-('TechData', 'Tech Data Serviços de Tecnologia Ltda.', '56789012345678'),
-('DataCenter Solutions', 'Data Center Solutions Ltda.', '90123456781234');
+('Camel Tech Cloud Solutions Ltda.', '12345678901234'),
+('Tech Data Serviços de Tecnologia Ltda.', '56789012345678'),
+('Data Center Solutions Ltda.', '90123456781234');
   
 CREATE TABLE representanteProvedora(
 idRepresentanteProvedora int primary key auto_increment,
@@ -45,9 +44,9 @@ CREATE TABLE unidadeProvedora (
   
   INSERT INTO unidadeProvedora (nomeUnidade, cep, rua, complemento, numero, fkProvedora)
 VALUES
-('São Paulo', '01234567', 'Av. Paulista', 'Andar 10', '123', 1),
-('Rio de Janeiro', '23456789', 'Rua Copacabana', 'Sala 301', '456', 2),
-('Belo Horizonte', '34567890', 'Av. Contorno', 'Bloco B', '789', 3);
+('Unidade São Paulo', '01234567', 'Av. Paulista', 'Andar 10', '123', 1),
+('Unidade Rio de Janeiro', '23456789', 'Rua Copacabana', 'Sala 301', '456', 2),
+('Unidade Belo Horizonte', '34567890', 'Av. Contorno', 'Bloco B', '789', 3);
 
 CREATE TABLE representanteUnidade(
 idRepresentanteUnidade int primary key auto_increment,
@@ -70,30 +69,88 @@ VALUES
 -- TABELA servidor
 CREATE TABLE servidor (
   idServidor INT PRIMARY KEY AUTO_INCREMENT,
-  NomeProcessador VARCHAR(100), 
-  frequenciaProcessador DECIMAL(4, 2), 
-  disco VARCHAR(100),
-  ram VARCHAR(100),
-  rede VARCHAR(100),
+  nomeResponsavel VARCHAR(45),
+  numeroRegistro VARCHAR(45),
+  frequenciaIdealProcessador VARCHAR(10),
+  capacidadeRam VARCHAR(10),
+  maxUsoRam VARCHAR(10),
+  capacidadeDisco VARCHAR(10),
+  maxUsoDisco VARCHAR(10),
+  velocidaDeRede VARCHAR(10),
   fkUnidade INT NOT NULL,
-  CONSTRAINT fkUnidServ FOREIGN KEY (fkUnidade) REFERENCES unidadeProvedora(idUnidadeProvedora) ON DELETE CASCADE,
-  fkRepresentanteUnidade int not null,
-   CONSTRAINT fkRepresentanteUnid FOREIGN KEY (fkRepresentanteUnidade) REFERENCES representanteUnidade(idRepresentanteUnidade) ON DELETE CASCADE
+  CONSTRAINT fkUnidServ FOREIGN KEY (fkUnidade) REFERENCES unidadeProvedora(idUnidadeProvedora) ON DELETE CASCADE
 );
 
-INSERT INTO servidor (fkUnidade,NomeProcessador, frequenciaProcessador, disco, ram, rede, fkRepresentanteUnidade)
-VALUES
-(1,'Intel Xeon E5', 3.2, '500GB SSD', '32GB', '1 Gigabit', 1);
+-- Insert 1
+INSERT INTO servidor (
+  nomeResponsavel,
+  numeroRegistro,
+  frequenciaIdealProcessador,
+  capacidadeRam,
+  maxUsoRam,
+  capacidadeDisco,
+  maxUsoDisco,
+  velocidaDeRede,
+  fkUnidade
+) VALUES (
+  'João Silva',
+  'SRV001',
+  '3.5 GHz',
+  '32GB',
+  '80%',
+  '1TB',
+  '60%',
+  '1 Gbps',
+  1
+);
+
+-- Insert 2
+INSERT INTO servidor (
+  nomeResponsavel,
+  numeroRegistro,
+  frequenciaIdealProcessador,
+  capacidadeRam,
+  maxUsoRam,
+  capacidadeDisco,
+  maxUsoDisco,
+  velocidaDeRede,
+  fkUnidade
+) VALUES (
+  'Maria Oliveira',
+  'SRV002',
+  '2.8 GHz',
+  '16GB',
+  '70%',
+  '500GB',
+  '50%',
+  '100 Mbps',
+  2
+);
+
+-- Insert 3
+INSERT INTO servidor (
+  nomeResponsavel,
+  numeroRegistro,
+  frequenciaIdealProcessador,
+  capacidadeRam,
+  maxUsoRam,
+  capacidadeDisco,
+  maxUsoDisco,
+  velocidaDeRede,
+  fkUnidade
+) VALUES (
+  'Carlos Santos',
+  'SRV003',
+  '3.0 GHz',
+  '64GB',
+  '90%',
+  '2TB',
+  '75%',
+  '10 Gbps',
+  3
+);
 
 
-INSERT INTO servidor (fkUnidade,NomeProcessador, frequenciaProcessador, disco, ram, rede, fkRepresentanteUnidade)
-VALUES
-(2,'AMD Ryzen 9', 3.8, '1TB NVMe', '64GB', '10 Gigabit', 2);
-
-
-INSERT INTO servidor (fkUnidade,NomeProcessador, frequenciaProcessador, disco, ram, rede, fkRepresentanteUnidade)
-VALUES
-(2,'AMD Ryzen 9', 3.8, '1TB NVMe', '64GB', '10 Gigabit', 2);
 
 -- TABELA tipoComponente
 CREATE TABLE tipoComponente (
@@ -102,7 +159,7 @@ CREATE TABLE tipoComponente (
   INSERT INTO tipoComponente (tipo) VALUES
 ('RAM'),
 ('Disco'),
-('CPU'),
+('Frequência'),
 ('Rede');
 
 -- TABELA tipoDado
@@ -112,7 +169,7 @@ CREATE TABLE tipoDado (
   INSERT INTO tipoDado (tipoDado) VALUES
 ('Uso de RAM'),
 ('Uso de Disco'),
-('Uso de CPU'),
+('Frequência do Processador'),
 ('Velocidade de Rede');
 
 
@@ -121,8 +178,8 @@ CREATE TABLE configuracao (
   idConfiguracao INT auto_increment,
   fkServidor INT NOT NULL,
   fktipoComponente INT NOT NULL,
-  PRIMARY KEY (idConfiguracao, fkServidor, fktipoComponente),
-  FOREIGN KEY (fkServidor) REFERENCES servidor(idServidor),
+  PRIMARY KEY (idConfiguracao, fkServidor, fktipoComponente) ,
+  FOREIGN KEY (fkServidor) REFERENCES servidor(idServidor) ON DELETE CASCADE,
   FOREIGN KEY (fktipoComponente) REFERENCES tipoComponente(idtipoComponente)
 );
 
@@ -130,17 +187,17 @@ CREATE TABLE configuracao (
 INSERT INTO configuracao values
 (1,1,1), -- RAM
 (2,1,2), -- DISCO
-(3,1,3), -- CPU
+(3,1,3), -- Frequência
 (4,1,4), -- REDE
 
 (5,2,1), -- RAM
 (6,2,2), -- DISCO
-(7,2,3), -- CPU
+(7,2,3), -- Frequência
 (8,2,4), -- REDE
 
 (9,3,1), -- RAM 
 (10,3,2), -- DISCO
-(11,3,3), -- CPU
+(11,3,3), -- Frequência
 (12,3,4); -- REDE
 
 
@@ -153,16 +210,13 @@ CREATE TABLE dadosCapturados (
   dadoCapturado Float,
   dtHora DATETIME,
   fkConfiguracao INT,
-  constraint fkConfigCap foreign key(fkConfiguracao) references configuracao(idConfiguracao),
+  constraint fkConfigCap foreign key(fkConfiguracao) references configuracao(idConfiguracao) ON DELETE CASCADE,
   fkTipoDado INT,
   constraint fkTipoDadoCap foreign key(fkTipoDado) references tipoDado(idTipoDado));
   
 select * from dadosCapturados;
 
 truncate table dadoscapturados;
-
-
-
 
 
 
@@ -197,3 +251,17 @@ INNER JOIN tipoComponente ON configuracao.fktipoComponente = tipoComponente.idti
 INNER JOIN servidor ON configuracao.fkServidor = servidor.idServidor
 WHERE servidor.idServidor = 2;
 
+-- SELECT PARA TRAZER OS DADOS DE RAM DE SOMENTE UM SERVIDOR
+SELECT
+    dc.dadoCapturado
+FROM servidor s
+JOIN configuracao c ON s.idServidor = c.fkServidor
+JOIN dadosCapturados dc ON c.idConfiguracao = dc.fkConfiguracao
+JOIN tipoDado td ON dc.fkTipoDado = td.idtipoDado
+WHERE s.idServidor = 1 AND td.tipoDado = 'Uso de RAM';
+
+
+
+
+  
+  
