@@ -12,24 +12,7 @@ VALUES
 ('Camel Tech Cloud Solutions Ltda.', '12345678901234'),
 ('Tech Data Serviços de Tecnologia Ltda.', '56789012345678'),
 ('Data Center Solutions Ltda.', '90123456781234');
-  
-CREATE TABLE representanteProvedora(
-idRepresentanteProvedora int primary key auto_increment,
-nome VARCHAR(45),
-dtNasc DATE,
-cpf VARCHAR(16),
-email VARCHAR(50),
-senha VARCHAR(45),
-fkProvedora int,
-constraint fkProvRepresentante foreign key(fkProvedora) references
- provedora(idProvedora)
-);
 
-INSERT INTO representanteProvedora (nome, dtNasc, cpf, email, senha, fkProvedora)
-VALUES
-('Ana Silva', '1980-05-15', '12345678901', 'ana.silva@email.com', 'senha123', 1),
-('Carlos Oliveira', '1985-08-22', '23456789012', 'carlos.oliveira@email.com', 'senha456', 2),
-('Erika Santos', '1990-03-10', '34567890123', 'erika.santos@email.com', 'senha789', 3);
 
 -- TABELA unidadeProvedora
 CREATE TABLE unidadeProvedora (
@@ -48,40 +31,55 @@ VALUES
 ('Unidade Rio de Janeiro', '23456789', 'Rua Copacabana', 'Sala 301', '456', 2),
 ('Unidade Belo Horizonte', '34567890', 'Av. Contorno', 'Bloco B', '789', 3);
 
-CREATE TABLE representanteUnidade(
-idRepresentanteUnidade int primary key auto_increment,
+-- TABELA tipoUsuario
+CREATE TABLE tipoUsuario(
+idTipoUsuario int primary key auto_increment,
+tipoUsuario VARCHAR(45)
+);
+
+  INSERT INTO tipoUsuario (tipoUsuario)
+VALUES
+('Administrador'),
+('Usuário Padrão');
+  
+-- Tabela usuario  
+CREATE TABLE usuario(
+idUsuario int primary key auto_increment,
 nome VARCHAR(45),
-dtNasc DATE,
 cpf VARCHAR(16),
 email VARCHAR(50),
 senha VARCHAR(45),
+fkProvedora int,
+constraint fkProvRepresentante foreign key(fkProvedora) references
+ provedora(idProvedora),
+fkTipoUsuario int,
+constraint fktipoUser foreign key (fkTipousuario) references tipoUsuario(idTipoUsuario)  ON DELETE CASCADE,
 fkUnidade int,
-constraint fkUnidRepresentante foreign key(fkUnidade) references
- unidadeProvedora(idUnidadeProvedora)
+constraint fkUnid foreign key(fkUnidade) references unidadeProvedora(idUnidadeProvedora)
 );
 
-INSERT INTO representanteUnidade (nome, dtNasc, cpf, email, senha, fkUnidade)
+INSERT INTO usuario (nome, cpf, email, senha, fkProvedora, fkTipoUsuario, fkUnidade)
 VALUES
-('Pedro Rodrigues', '1982-11-25', '12345678901', 'pedro.rodrigues@email.com', 'senha123', 1),
-('Mariana Costa', '1987-04-18', '23456789012', 'mariana.costa@email.com', 'senha456', 2),
-('Lucas Oliveira', '1992-09-03', '34567890123', 'lucas.oliveira@email.com', 'senha789', 3);
+('João Silva', '123.456.789-01', 'joao@email.com', 'senha123', 1, 1, 1),
+('Maria Oliveira', '234.567.890-12', 'maria@email.com', 'senha456', 2, 2, 2),
+('Carlos Santos', '345.678.901-23', 'carlos@email.com', 'senha789', 3, 2, 3);
 
 -- TABELA servidor
 CREATE TABLE servidor (
   idServidor INT PRIMARY KEY AUTO_INCREMENT,
   nomeResponsavel VARCHAR(45),
   numeroRegistro VARCHAR(45),
-  frequenciaIdealProcessador VARCHAR(10),
-  capacidadeRam VARCHAR(10),
-  maxUsoRam VARCHAR(10),
-  capacidadeDisco VARCHAR(10),
-  maxUsoDisco VARCHAR(10),
-  velocidaDeRede VARCHAR(10),
+  frequenciaIdealProcessador FLOAT,
+  capacidadeRam INT,
+  maxUsoRam INT,
+  capacidadeDisco INT,
+  maxUsoDisco INT,
+  velocidaDeRede FLOAT,
   fkUnidade INT NOT NULL,
   CONSTRAINT fkUnidServ FOREIGN KEY (fkUnidade) REFERENCES unidadeProvedora(idUnidadeProvedora) ON DELETE CASCADE
 );
 
--- Insert 1
+-- Inserção na tabela servidor
 INSERT INTO servidor (
   nomeResponsavel,
   numeroRegistro,
@@ -95,16 +93,15 @@ INSERT INTO servidor (
 ) VALUES (
   'João Silva',
   'SRV001',
-  '3.5 GHz',
-  '32GB',
-  '80%',
-  '1TB',
-  '60%',
-  '1 Gbps',
+  3.5,
+  32,
+  80,
+  1024,
+  614,
+  1,
   1
 );
 
--- Insert 2
 INSERT INTO servidor (
   nomeResponsavel,
   numeroRegistro,
@@ -118,16 +115,15 @@ INSERT INTO servidor (
 ) VALUES (
   'Maria Oliveira',
   'SRV002',
-  '2.8 GHz',
-  '16GB',
-  '70%',
-  '500GB',
-  '50%',
-  '100 Mbps',
+  2.8,
+  16,
+  70,
+  512,
+  256,
+  100,
   2
 );
 
--- Insert 3
 INSERT INTO servidor (
   nomeResponsavel,
   numeroRegistro,
@@ -141,14 +137,15 @@ INSERT INTO servidor (
 ) VALUES (
   'Carlos Santos',
   'SRV003',
-  '3.0 GHz',
-  '64GB',
-  '90%',
-  '2TB',
-  '75%',
-  '10 Gbps',
+  3.0,
+  64,
+  90,
+  2048,
+  1536,
+  10000,
   3
 );
+
 
 
 
@@ -222,14 +219,15 @@ truncate table dadoscapturados;
 
 
 
-  -- SELECTS 
+  -- ------------------------------------------------------- SELECTS -----------------------------------------------------------------------
   
+  -- SELECT PARA TRAZER SOMENTE AS CONFIGURAÇÕES QUE ESTÃO ATRELADAS A UM TIPO DE COMPONENTE EX: RAM
     SELECT c.idConfiguracao
 FROM configuracao c
 JOIN servidor s ON c.fkServidor = s.idServidor
 WHERE c.fktipoComponente = 2;
 
-
+-- SELECT PARA TTRAZER TODOS OS DADOS CAPTURADOS COM O NOME DO TIPO DE DADO CAPTURADO
 SELECT dc.iddadosCapturados,
        dc.dadoCapturado,
        dc.dtHora,
@@ -251,6 +249,8 @@ INNER JOIN tipoComponente ON configuracao.fktipoComponente = tipoComponente.idti
 INNER JOIN servidor ON configuracao.fkServidor = servidor.idServidor
 WHERE servidor.idServidor = 2;
 
+
+
 -- SELECT PARA TRAZER OS DADOS DE RAM DE SOMENTE UM SERVIDOR
 SELECT
     dc.dadoCapturado
@@ -260,8 +260,30 @@ JOIN dadosCapturados dc ON c.idConfiguracao = dc.fkConfiguracao
 JOIN tipoDado td ON dc.fkTipoDado = td.idtipoDado
 WHERE s.idServidor = 1 AND td.tipoDado = 'Uso de RAM';
 
+-- 
+SELECT
+    s.idServidor,
+    s.capacidadeRam,
+    s.maxUsoRam,
+    dc.dadoCapturado
+FROM
+    servidor s
+JOIN
+    configuracao c ON s.idServidor = c.fkServidor
+JOIN
+    dadosCapturados dc ON c.idConfiguracao = dc.fkConfiguracao
+JOIN
+    tipoDado td ON dc.fkTipoDado = td.idtipoDado
+WHERE
+    s.idServidor = 1
+    AND td.tipoDado = 'Uso de RAM';
 
 
 
-  
-  
+SELECT
+    s.numeroRegistro,
+    sd.maxUsoDisco
+FROM servidor s
+JOIN unidadeProvedora up ON s.fkUnidade = up.idunidadeProvedora
+JOIN servidor sd ON up.idunidadeProvedora = sd.fkUnidade
+WHERE s.numeroRegistro = 'SRV001';
