@@ -27,7 +27,6 @@ public class Main {
 
             // Agendamento de tarefas a cada 30 segundos
             timer.scheduleAtFixedRate(new TimerTask() {
-                private int contadorExecucoes = 0;
 
                 @Override
                 public void run() {
