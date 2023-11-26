@@ -75,8 +75,8 @@ CREATE TABLE servidor (
   capacidadeDisco INT,
   maxUsoDisco INT,
   velocidaDeRede FLOAT,
-  fkUnidade INT NOT NULL,
-  CONSTRAINT fkUnidServ FOREIGN KEY (fkUnidade) REFERENCES unidadeProvedora(idUnidadeProvedora) ON DELETE CASCADE
+  fkUsuario INT NOT NULL,
+CONSTRAINT fkUserUnid FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE
 );
 
 -- Inserção na tabela servidor
@@ -89,7 +89,7 @@ INSERT INTO servidor (
   capacidadeDisco,
   maxUsoDisco,
   velocidaDeRede,
-  fkUnidade
+  fkUsuario
 ) VALUES (
   'João Silva',
   'SRV001',
@@ -111,7 +111,7 @@ INSERT INTO servidor (
   capacidadeDisco,
   maxUsoDisco,
   velocidaDeRede,
-  fkUnidade
+  fkUsuario
 ) VALUES (
   'Maria Oliveira',
   'SRV002',
@@ -121,7 +121,7 @@ INSERT INTO servidor (
   512,
   256,
   100,
-  2
+  1
 );
 
 INSERT INTO servidor (
@@ -133,7 +133,7 @@ INSERT INTO servidor (
   capacidadeDisco,
   maxUsoDisco,
   velocidaDeRede,
-  fkUnidade
+  fkUsuario
 ) VALUES (
   'Carlos Santos',
   'SRV003',
@@ -143,7 +143,7 @@ INSERT INTO servidor (
   2048,
   1536,
   10000,
-  3
+  2
 );
 
 
@@ -217,8 +217,6 @@ truncate table dadoscapturados;
 
 
 
-
-
   -- ------------------------------------------------------- SELECTS -----------------------------------------------------------------------
   
   -- SELECT PARA TRAZER SOMENTE AS CONFIGURAÇÕES QUE ESTÃO ATRELADAS A UM TIPO DE COMPONENTE EX: RAM
@@ -266,17 +264,11 @@ SELECT
     s.capacidadeRam,
     s.maxUsoRam,
     dc.dadoCapturado
-FROM
-    servidor s
-JOIN
-    configuracao c ON s.idServidor = c.fkServidor
-JOIN
-    dadosCapturados dc ON c.idConfiguracao = dc.fkConfiguracao
-JOIN
-    tipoDado td ON dc.fkTipoDado = td.idtipoDado
-WHERE
-    s.idServidor = 1
-    AND td.tipoDado = 'Uso de RAM';
+FROM servidor s
+JOIN configuracao c ON s.idServidor = c.fkServidor
+JOIN dadosCapturados dc ON c.idConfiguracao = dc.fkConfiguracao
+JOIN tipoDado td ON dc.fkTipoDado = td.idtipoDado
+WHERE s.idServidor = 1 AND td.tipoDado = 'Uso de RAM';
 
 
 
@@ -287,3 +279,4 @@ FROM servidor s
 JOIN unidadeProvedora up ON s.fkUnidade = up.idunidadeProvedora
 JOIN servidor sd ON up.idunidadeProvedora = sd.fkUnidade
 WHERE s.numeroRegistro = 'SRV001';
+
