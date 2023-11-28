@@ -16,7 +16,7 @@ VALUES
 
 -- TABELA unidadeProvedora
 CREATE TABLE unidadeProvedora (
-  idunidadeProvedora INT PRIMARY KEY auto_increment,
+  idUnidadeProvedora INT PRIMARY KEY auto_increment,
   nomeUnidade VARCHAR(45),
   cep CHAR(8),
   rua VARCHAR(45),
@@ -58,11 +58,12 @@ fkUnidade int,
 constraint fkUnid foreign key(fkUnidade) references unidadeProvedora(idUnidadeProvedora)
 );
 
-INSERT INTO usuario (nome, cpf, email, senha, fkProvedora, fkTipoUsuario, fkUnidade)
+
+INSERT INTO usuario (nome, cpf, email, senha, fkTipoUsuario,fkUnidade,fkProvedora)
 VALUES
-('João Silva', '123.456.789-01', 'joao@email.com', 'senha123', 1, 1, 1),
-('Maria Oliveira', '234.567.890-12', 'maria@email.com', 'senha456', 2, 2, 2),
-('Carlos Santos', '345.678.901-23', 'carlos@email.com', 'senha789', 3, 2, 3);
+('João Silva', '123.456.789-01', 'joao@email.com', 'senha123', 1,null,1),
+('Maria Oliveira', '234.567.890-12', 'maria@email.com', 'senha456', 2,2,null),
+('Carlos Santos', '345.678.901-23', 'carlos@email.com', 'senha789', 2,3,null);
 
 -- TABELA servidor
 CREATE TABLE servidor (
@@ -74,10 +75,12 @@ CREATE TABLE servidor (
   maxUsoRam INT,
   capacidadeDisco INT,
   maxUsoDisco INT,
-  velocidaDeRede FLOAT,
+  velocidadeDeRede FLOAT,
   fkUsuario INT NOT NULL,
 CONSTRAINT fkUserUnid FOREIGN KEY (fkUsuario) REFERENCES usuario(idUsuario) ON DELETE CASCADE
 );
+
+SELECT numeroRegistro FROM servidor WHERE fkUsuario = 2;
 
 -- Inserção na tabela servidor
 INSERT INTO servidor (
@@ -88,7 +91,7 @@ INSERT INTO servidor (
   maxUsoRam,
   capacidadeDisco,
   maxUsoDisco,
-  velocidaDeRede,
+  velocidadeDeRede,
   fkUsuario
 ) VALUES (
   'João Silva',
@@ -99,7 +102,7 @@ INSERT INTO servidor (
   1024,
   614,
   1,
-  1
+  3
 );
 
 INSERT INTO servidor (
@@ -110,7 +113,7 @@ INSERT INTO servidor (
   maxUsoRam,
   capacidadeDisco,
   maxUsoDisco,
-  velocidaDeRede,
+  velocidadeDeRede,
   fkUsuario
 ) VALUES (
   'Maria Oliveira',
@@ -121,7 +124,7 @@ INSERT INTO servidor (
   512,
   256,
   100,
-  1
+  3
 );
 
 INSERT INTO servidor (
@@ -132,7 +135,7 @@ INSERT INTO servidor (
   maxUsoRam,
   capacidadeDisco,
   maxUsoDisco,
-  velocidaDeRede,
+  velocidadeDeRede,
   fkUsuario
 ) VALUES (
   'Carlos Santos',
@@ -280,3 +283,7 @@ JOIN unidadeProvedora up ON s.fkUnidade = up.idunidadeProvedora
 JOIN servidor sd ON up.idunidadeProvedora = sd.fkUnidade
 WHERE s.numeroRegistro = 'SRV001';
 
+
+
+  
+  
