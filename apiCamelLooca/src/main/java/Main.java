@@ -43,23 +43,28 @@ public class Main {
                     rede.calcularVelocidadeDeRede();
                     processador.captarProcessador();
 
-                    try (Connection conexao = db.ConectarSQLServer()) {
+                    try (Connection conexao = db.conectar()) {
                         List<Integer> idsServidores = usuario.obterIdsServidoresAtrelados(conexao);
                         String NumIpv4 = rede.getNumIpv4();
 
                         db.inserirDados(conexao, ram.getMemoriaEmUso(), 1, idsServidores, 1);
-                        alertas.montarMensagem(conexao,"Ram", NumIpv4);
+
                         db.inserirDados(conexao, disco.getUsoDisco(), 2, idsServidores, 2);
-                        alertas.montarMensagem(conexao,"Disco", NumIpv4);
+
                         db.inserirDados(conexao, processador.getQtdemUso(), 3, idsServidores, 3);
-                        alertas.montarMensagem(conexao,"Processador", NumIpv4);
+
                         db.inserirDados(conexao, rede.calcularVelocidadeDeRede(), 4, idsServidores, 4);
-                        alertas.montarMensagem(conexao,"Placa de Rede", NumIpv4);
+
+                        alertas.montarMensagem(conexao,"Ram");
+                        alertas.montarMensagem(conexao,"Disco");
+                        alertas.montarMensagem(conexao,"Processador");
+                        alertas.montarMensagem(conexao,"Placa de Rede");
+
                     } catch (SQLException ex) {
                         System.out.println("Erro ao conectar ao banco de dados: " + ex.getMessage());
                     }
                 }
-            }, 0, 10 * 1000); // 0 segundos de atraso, 30 segundos de intervalo entre as tarefas
+            }, 0, 30 * 1000); // 0 segundos de atraso, 30 segundos de intervalo entre as tarefas
         } else {
             System.out.println("Login falhou. O programa será encerrado.");
         }
@@ -96,7 +101,7 @@ public class Main {
         System.out.print("Senha: ");
         String senha = scanner.nextLine();
 
-        try (Connection conexao = db.ConectarSQLServer()) {
+        try (Connection conexao = db.conectar()) {
             String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
             try (PreparedStatement statement = conexao.prepareStatement(sql)) {
                 statement.setString(1, email);

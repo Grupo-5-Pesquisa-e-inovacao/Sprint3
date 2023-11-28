@@ -1,4 +1,6 @@
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Timer;
 
@@ -15,43 +17,47 @@ public class ValidacaoAlertas {
         this.usuario = usuario;
     }
 
-    public String montarMensagem(Connection conexao, String componente, String numIpv4) throws SQLException {
-        String maxUsoDisco = db.obterMaxUsoDisco(conexao, usuario.getIdUsuario());
-        String maxUsoRam = db.obterMaxUsoRam(conexao, usuario.getIdUsuario());
-        String frequenciaIdealProcessador = db.obterFrequenciaIdealProcessador(conexao, usuario.getIdUsuario());
-        String obterVelocidadeDeRede = db.obterVelocidadeDeRede(conexao, usuario.getIdUsuario());
+    public String montarMensagem(Connection conexao, String componente) throws SQLException {
+        Integer maxUsoDisco = db.obterMaxUsoDisco(conexao, usuario.getIdUsuario());
+        Integer maxUsoRam = db.obterMaxUsoRam(conexao, usuario.getIdUsuario());
+        Double frequenciaIdealProcessador = db.obterFrequenciaIdealProcessador(conexao, usuario.getIdUsuario());
+        Double obterVelocidadeDeRede = db.obterVelocidadeDeRede(conexao, usuario.getIdUsuario());
 
         String mensagem = null;
-        if (componente.equals("Ram")) {
-            if (ram.getMemoriaEmUso() >= 1) { //maxUsoRam
-                String NumIpv4 = rede.getNumIpv4();
-                mensagem = "O servidor de identificação " + numIpv4 + " está com " + componente + " em estado de alerta";
-                slack.mainSlack(mensagem);
+
+        String query = "SELECT numeroRegistro FROM servidor WHERE fkUsuario = ?";
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(query)) {
+            preparedStatement.setInt(1, usuario.getIdUsuario());
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String numeroRegistro = resultSet.getString("numeroRegistro");
+
+                    if (componente.equals("Ram") && maxUsoRam >= 1) {
+                        mensagem = "O servidor de identificação " + numeroRegistro + " está com " + componente + " em estado de alerta";
+                        slack.mainSlack(mensagem);
+                    }
+                    if (componente.equals("Disco") && maxUsoDisco >= 1) {
+                        mensagem = "O servidor de identificação " + numeroRegistro + " está com " + componente + " em estado de alerta";
+                        slack.mainSlack(mensagem);
+                    }
+                    if (componente.equals("Frequência") && frequenciaIdealProcessador >= 1) {
+                        mensagem = "O servidor de identificação " + numeroRegistro + " está com " + componente + " em estado de alerta";
+                        slack.mainSlack(mensagem);
+                    }
+                    if (componente.equals("Placa de Rede") && obterVelocidadeDeRede <= 1) {
+                        mensagem = "O servidor de identificação " + numeroRegistro + " está com " + componente + " em estado de alerta";
+                        slack.mainSlack(mensagem);
+                    }
+                } else {
+                    System.out.println("Erro: Não foi possível encontrar o número de registro para o usuário " + usuario.getIdUsuario());
+                }
             }
         }
-        if (componente.equals("Disco")) {
-            if (disco.getUsoDisco() >= 1) { //maxUsoDisco
-                String NumIpv4 = rede.getNumIpv4();
-                mensagem = "O servidor de identificação " + numIpv4 + " está com " + componente + " em estado de alerta";
-                slack.mainSlack(mensagem);
-            }
-        }
-        if (componente.equals("Processador")) {
-            if (processador.getQtdemUso() >= 1) { //frequenciaIdealProcessador
-                String NumIpv4 = rede.getNumIpv4();
-                mensagem = "O servidor de identificação " + numIpv4 + " está com " + componente + " em estado de alerta";
-                slack.mainSlack(mensagem);
-            }
-        }
-        if (componente.equals("Placa de Rede")) {
-            if (rede.getVelocidadeDeRede() <= 1) { //velocidaDeRede
-                String NumIpv4 = rede.getNumIpv4();
-                mensagem = "O servidor de identificação " + numIpv4 + " está com " + componente + " em estado de alerta";
-                slack.mainSlack(mensagem);
-            }
-        }
+
         return mensagem;
     }
+
+
 
 
 }
