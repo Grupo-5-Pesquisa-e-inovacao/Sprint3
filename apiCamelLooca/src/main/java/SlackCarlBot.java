@@ -1,14 +1,16 @@
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Timer;
 
 public class SlackCarlBot {
 
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
+    public void mainSlack(String mensagem){
         String webhookUrl = "https://hooks.slack.com/services/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";
         String channel = "#dashboard";
         String username = "Carl-Bot";
-        String text = "O servidor 104 está em estado de alerta";
+        String text = mensagem;
         String iconUrl = "carl-bot.jpeg";
 
         try {

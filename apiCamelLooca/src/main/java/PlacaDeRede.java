@@ -10,6 +10,10 @@ public class PlacaDeRede {
     private Long bytesRecebidosAntes;
     private Long bytesEnviadosAntes;
 
+    private Long velocidadeDeRede;
+
+
+
     public void captarPlacaDeRede() {
         Looca looca = new Looca();
         Rede rede = looca.getRede();
@@ -28,24 +32,26 @@ public class PlacaDeRede {
     public Long calcularVelocidadeDeRede() {
         Looca looca = new Looca();
         RedeInterfaceGroup redeInterfaceGroup = new RedeInterfaceGroup(new SystemInfo());
-
+        Long velocidadeRecebida = null;
+        Long velocidadeEnviada = null;
         for (int i = 0; i < redeInterfaceGroup.getInterfaces().size(); i++) {
             if (redeInterfaceGroup.getInterfaces().get(i).getEnderecoIpv4().size() > 0) {
                 Long bytesRecebidosAgora = redeInterfaceGroup.getInterfaces().get(i).getBytesRecebidos();
                 Long bytesEnviadosAgora = redeInterfaceGroup.getInterfaces().get(i).getBytesEnviados();
-
-                Long velocidadeRecebida = bytesRecebidosAgora - bytesRecebidosAntes;
-                Long velocidadeEnviada = bytesEnviadosAgora - bytesEnviadosAntes;
-
-                // Atualizar os valores anteriores para o próximo cálculo
-                bytesRecebidosAntes = bytesRecebidosAgora;
-                bytesEnviadosAntes = bytesEnviadosAgora;
-
-                return velocidadeRecebida + velocidadeEnviada;
+                velocidadeRecebida = (long) (bytesRecebidosAgora*8)/30;
+                velocidadeEnviada = (long) (bytesEnviadosAgora*8/30);
+                setVelocidadeDeRede(velocidadeEnviada);
             }
         }
+        return velocidadeEnviada;
+    }
 
-        return null;
+    public Long getVelocidadeDeRede() {
+        return velocidadeDeRede;
+    }
+
+    public void setVelocidadeDeRede(Long velocidadeDeRede) {
+        this.velocidadeDeRede = velocidadeDeRede;
     }
 
     public String getHostName() {

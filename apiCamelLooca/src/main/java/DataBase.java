@@ -5,10 +5,24 @@ import java.util.List;
 
 public class DataBase {
     private static final String LOCAL_DB_URL = "jdbc:mysql://localhost/CamelTech?user=aidmin&password=senhaDificil235813";
+  /*
     private static final String CLOUD_DB_URL = "jdbc:mysql://containers-us-west-156.railway.app:6470/railway";
     private static final String CLOUD_DB_USER = "root";
     private static final String CLOUD_DB_PASSWORD = "Utjrg0FbyRsc68BFOQC3";
+*/
+  String SQL_SERVER_URL = "jdbc:sqlserver://3.233.52.99:1433;databaseName=camelTech;encrypt=false;trustServerCertificate=true";
+    private static final String SQL_SERVER_USER = "sa";
+    private static final String SQL_SERVER_PASSWORD = "SASenha123";
 
+    public Connection ConectarSQLServer() throws SQLException {
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            return DriverManager.getConnection(SQL_SERVER_URL, SQL_SERVER_USER, SQL_SERVER_PASSWORD);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Driver JDBC do SQL Server não encontrado.", e);
+        }
+    }
+    /*
     public Connection conectar() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,7 +31,7 @@ public class DataBase {
             throw new SQLException("Driver JDBC do MySQL não encontrado.", e);
         }
     }
-
+*/
     public List<Integer> obterConfiguracoesPorTipo(Connection conexao, int tipoComponente) throws SQLException {
         List<Integer> configuracoes = new ArrayList<>();
 
@@ -88,9 +102,60 @@ public class DataBase {
 
     }
 
+
+    public String obterMaxUsoRam(Connection conexao,  int fkUsuario) throws SQLException {
+        String maxUsoRam = null;
+        String sql = "select maxUsoRam from servidor where fkUsuario = ?";
+        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+            statement.setInt(1, fkUsuario);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    maxUsoRam = resultSet.getString("maxUsoRam");
+                }
+            }
+        }
+        return maxUsoRam;
+    }
+    public String obterMaxUsoDisco(Connection conexao, int fkUsuario) throws SQLException {
+        String maxUsoDisco = null;
+        String sql = "select maxUsoDisco from servidor where fkUsuario = ?";
+        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+            statement.setInt(1, fkUsuario);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    maxUsoDisco = resultSet.getString("maxUsoDisco");
+                }
+            }
+        }
+        return maxUsoDisco;
+    }
+    public String obterFrequenciaIdealProcessador(Connection conexao,  int fkUsuario) throws SQLException {
+        String frequenciaIdealProcessador = null;
+        String sql = "select frequenciaIdealProcessador from servidor where fkUsuario = ?";
+        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+            statement.setInt(1, fkUsuario);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    frequenciaIdealProcessador = resultSet.getString("frequenciaIdealProcessador");
+                }
+            }
+        }
+        return frequenciaIdealProcessador;
+    }
+    public String obterVelocidadeDeRede(Connection conexao,  int fkUsuario) throws SQLException {
+        String velocidadeDeRede = null;
+        String sql = "select velocidaDeRede from servidor where fkUsuario = ?";
+        try (PreparedStatement statement = conexao.prepareStatement(sql)) {
+            statement.setInt(1, fkUsuario);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    velocidadeDeRede = resultSet.getString("velocidaDeRede");
+                }
+            }
+        }
+        return velocidadeDeRede;
+    }
 }
-
-
 
     /*
     public Connection conectarNuvem() throws SQLException {

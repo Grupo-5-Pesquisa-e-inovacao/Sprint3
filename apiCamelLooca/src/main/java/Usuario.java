@@ -40,6 +40,8 @@ public class Usuario {
         return idsServidores;
     }
 
+
+
     public int getIdUsuario() {
         return idUsuario;
     }
