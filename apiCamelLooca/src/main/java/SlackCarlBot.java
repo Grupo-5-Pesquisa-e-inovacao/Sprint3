@@ -7,7 +7,7 @@ public class SlackCarlBot {
 
     //public static void main(String[] args) {
     public void mainSlack(String mensagem){
-        String webhookUrl = "https://hooks.slack.com/services/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";
+        String webhookUrl = "https://hooks.slack.com/services/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";
         String channel = "#dashboard";
         String username = "Carl-Bot";
         String text = mensagem;
@@ -28,7 +28,6 @@ public class SlackCarlBot {
                 os.write(input, 0, input.length);
             }
 
-            // Obter a resposta (opcional)
             int responseCode = connection.getResponseCode();
             System.out.println("Resposta do Slack: " + responseCode);
 

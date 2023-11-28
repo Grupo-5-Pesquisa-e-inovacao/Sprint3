@@ -13,7 +13,7 @@ public class DataBase {
   String SQL_SERVER_URL = "jdbc:sqlserver://3.233.52.99:1433;databaseName=camelTech;encrypt=false;trustServerCertificate=true";
     private static final String SQL_SERVER_USER = "sa";
     private static final String SQL_SERVER_PASSWORD = "SASenha123";
-    /*
+
      public Connection ConectarSQLServer() throws SQLException {
          try {
              Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
@@ -22,7 +22,8 @@ public class DataBase {
              throw new SQLException("Driver JDBC do SQL Server não encontrado.", e);
          }
      }
- */
+
+     /*
      public Connection conectar() throws SQLException {
          try {
              Class.forName("com.mysql.cj.jdbc.Driver");
@@ -31,7 +32,7 @@ public class DataBase {
              throw new SQLException("Driver JDBC do MySQL não encontrado.", e);
          }
      }
-
+*/
     public List<Integer> obterConfiguracoesPorTipo(Connection conexao, int tipoComponente) throws SQLException {
         List<Integer> configuracoes = new ArrayList<>();
 
