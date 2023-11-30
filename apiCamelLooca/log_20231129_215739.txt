@@ -1,0 +1,4 @@
+20231129_215739: SEVERE: Tentativa de conexao falha!
+ Credenciais:
+ Conexão: jdbc:sqlserver://3.233.52.99:1433;databaseName=camelTech;encrypt=false;trustServerCertificate=truesaSASenha12
+20231129_215739: FINEST: Resposta: Login failed for user 'sa'. ClientConnectionId:94563956-6e33-4ecf-bf7d-bd4953e1d32a

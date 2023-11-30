@@ -1,3 +1,9 @@
+import Log.LogParameters;
+import netscape.javascript.JSObject;
+
+import com.google.gson.Gson;
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +25,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Usuario usuario = login(scanner, db);
         ValidacaoAlertas alertas = new ValidacaoAlertas(usuario);
+        LogParameters logParameters = new LogParameters();
 
         if (usuario != null) {
             System.out.println("Login bem-sucedido. Início do processo de captura:");
@@ -33,15 +40,22 @@ public class Main {
                 public void run() {
                     LocalDateTime dataHora = LocalDateTime.now();
                     DateTimeFormatter formatadorDeDataHora = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.forLanguageTag("pt-BR"));
-
+                    List<String> dados = new ArrayList<>();
                     System.out.println(formatadorDeDataHora.format(dataHora));
 
 
                     disco.captarInformacoesDoDisco();
+                    dados.add("Uso disco: " + disco.getUsoDisco().toString());
                     ram.captarMemoria();
+                    dados.add("Uso ram: " +ram.getMemoriaEmUso().toString());
                     rede.captarPlacaDeRede();
                     rede.calcularVelocidadeDeRede();
+                    dados.add("Uso rede: " +rede.getVelocidadeDeRede().toString());
                     processador.captarProcessador();
+                    dados.add("Uso processador: " +processador.getQtdemUso().toString());
+
+                    String jsonDados = new Gson().toJson(dados);
+                    logParameters.logParametros("Sucesso", jsonDados);
 
                     try (Connection conexao = db.ConectarSQLServer()) {
                         List<Integer> idsServidores = usuario.obterIdsServidoresAtrelados(conexao);
@@ -72,6 +86,7 @@ public class Main {
 
     // Método para realizar o login e retornar um objeto Usuario se o login for bem-sucedido
     private static Usuario login(Scanner scanner, DataBase db) {
+        LogParameters logParameters = new LogParameters();
         boolean loginSucesso = false;
         Usuario usuario = null;
 
@@ -101,9 +116,14 @@ public class Main {
 
             System.out.print("Senha: ");
             String senha = scanner.nextLine();
+            String resultado = "";
+            String sqlServerUrl = db.SQL_SERVER_URL;
+            String sqlServerUser = db.SQL_SERVER_USER;
+            String sqlServerPassword = db.SQL_SERVER_PASSWORD;
 
             try (Connection conexao = db.ConectarSQLServer()) {
                 String sql = "SELECT * FROM usuario WHERE email = ? AND senha = ?";
+
                 try (PreparedStatement statement = conexao.prepareStatement(sql)) {
                     statement.setString(1, email);
                     statement.setString(2, senha);
@@ -120,6 +140,9 @@ public class Main {
                             // Verificar se a unidade associada ao usuário é válida
                             String nomeUnidade = verificarUnidadeValida(conexao, fkUnidade, email);
 
+                            resultado = String.valueOf(resultSet);
+                            logParameters.logLogin(email, senha, "Sucesso", resultado);
+
                             if (nomeUnidade != null) {
                                 usuario = new Usuario(idUsuario, nome, cpf, emailBanco, senhaBanco);
                                 System.out.println("Login bem-sucedido. Bem-vindo, " + usuario.getNome() + "!");
@@ -127,14 +150,22 @@ public class Main {
                                 loginSucesso = true;
                             } else {
                                 System.out.println("Login falhou. Usuário associado a uma unidade inválida. Tente novamente.");
+                                resultado = String.valueOf(resultSet);
+                                logParameters.logLogin(email, senha, "Erro", resultado);
                             }
                         } else {
                             System.out.println("Login falhou. Credenciais inválidas. Tente novamente.");
+                            resultado = String.valueOf(resultSet);
+                            logParameters.logLogin(email, senha, "Erro", resultado);
                         }
                     }
                 }
             } catch (SQLException e) {
                 System.out.println("Erro ao conectar ao banco de dados: " + e.getMessage());
+                String conexao = sqlServerUrl+sqlServerUser+sqlServerPassword;
+                String resposta = e.getMessage();
+                logParameters.logConexao(conexao, resposta, "Erro");
+                System.exit(1);
             }
         } while (!loginSucesso);
 

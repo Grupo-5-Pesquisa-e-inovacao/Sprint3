@@ -1,0 +1,16 @@
+20231129_214938 : INFO : Login realizado!
+ Usuario de Credenciais:
+ Email: maria@email.com Senha: senha456
+20231129_214938 : FINEST : Resposta: Sucesso
+
+20231129_214954 : INFO : Status de Captura: Sucesso
+20231129_214954 : FINEST : Resposta: ["Uso disco: 136.89944553375244",
+                                      "Uso ram: 7.369392395019531",
+                                      "Uso rede: 396782",
+                                      "Uso processador: 2.5212036714302313"]
+
+20231129_215020 : INFO : Status de Captura: Sucesso
+20231129_215020 : FINEST : Resposta: ["Uso disco: 136.8878812789917",
+                                      "Uso ram: 7.449779510498047",
+                                      "Uso rede: 398036",
+                                      "Uso processador: 2.5212036714302313"]

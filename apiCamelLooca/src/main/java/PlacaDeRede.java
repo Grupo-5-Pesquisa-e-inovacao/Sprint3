@@ -39,7 +39,7 @@ public class PlacaDeRede {
                 Long bytesRecebidosAgora = redeInterfaceGroup.getInterfaces().get(i).getBytesRecebidos();
                 Long bytesEnviadosAgora = redeInterfaceGroup.getInterfaces().get(i).getBytesEnviados();
                 velocidadeRecebida = (long) (bytesRecebidosAgora*8)/30;
-                velocidadeEnviada = (long) (bytesEnviadosAgora*8/30);
+                velocidadeEnviada = (long) (bytesEnviadosAgora*8/40);
                 setVelocidadeDeRede(velocidadeEnviada);
             }
         }

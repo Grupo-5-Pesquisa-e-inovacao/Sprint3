@@ -7,7 +7,7 @@ public class SlackCarlBot {
 
     //public static void main(String[] args) {
     public void mainSlack(String mensagem){
-        String webhookUrl = "https://hooks.slack.com/services/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";
+        String webhookUrl = "https://hooks.slack.com/services/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";
         String channel = "#dashboard";
         String username = "Carl-Bot";
         String text = mensagem;

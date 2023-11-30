@@ -1,0 +1,8 @@
+20231129_222204: INFO: Login realizado!
+ Usuario de Credenciais:
+ Email: maria@email.com Senha: senha456
+20231129_222204: FINEST: Resposta: Sucesso
+
+20231129_222221: INFO: Status: Sucesso
+20231129_222221: FINEST: Resposta: ["Uso disco: 134.64552068710327","Uso ram: 7.453044891357422","Uso rede: 313302","Uso processador: 1.696546745277343"]
+
