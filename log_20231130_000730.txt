@@ -1,0 +1,3 @@
+20231130_000730: INFO: Status: Sucesso
+20231130_000730: FINEST: Resposta: ["Uso disco: 120.36374711990356","Uso ram: 6.934619903564453","Uso rede: 367791","Uso processador: 2.8426273134147815"]
+
