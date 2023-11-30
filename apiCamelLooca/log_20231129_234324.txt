@@ -1,0 +1,5 @@
+20231129_234324: INFO: Login realizado!
+ Usuario de Credenciais:
+ Email: maria@email.com Senha: senha456
+20231129_234324: FINEST: Resposta: Sucesso
+
