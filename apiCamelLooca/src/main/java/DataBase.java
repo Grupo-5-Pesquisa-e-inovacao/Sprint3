@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DataBase {
     LogParameters logParameters = new LogParameters();
-    private static final String LOCAL_DB_URL = "jdbc:mysql://localhost/CamelTech?user=aidmin&password=senhaDificil235813";
+    private static final String LOCAL_DB_URL = "jdbc:mysql://localhost:3306/CamelTech?user=aidmin&password=senhaDificil235813";
   /*
     private static final String CLOUD_DB_URL = "jdbc:mysql://containers-us-west-156.railway.app:6470/railway";
     private static final String CLOUD_DB_USER = "root";
